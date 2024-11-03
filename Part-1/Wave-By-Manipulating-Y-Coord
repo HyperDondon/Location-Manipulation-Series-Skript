@@ -1,0 +1,34 @@
+command test123:
+    trigger:
+        a_wave(player's location, 0)
+        a_wave(player's location, 1)
+        a_wave(player's location, 2)
+        a_wave(player's location, 3)
+        a_wave(player's location, 4)
+        a_wave(player's location, 5)
+        a_wave(player's location, -1)
+        a_wave(player's location, -2)
+        a_wave(player's location, -3)
+        a_wave(player's location, -4)
+        a_wave(player's location, -5)
+
+function a_wave(loc: location, rightorleft: int):
+    set {_add} to 0
+    set {_countdown} to false
+    set {_pl} to {_loc}
+    loop 200 times:
+        set {_amm} to loop-iteration
+        set {_location} to location {_amm} blocks infront and 1 block above and {_rightorleft} blocks right of {_pl}
+        if {_countdown} is false:
+            add 0.2 to {_add}
+        else:
+            remove 0.2 from {_add}
+        if {_add} > 3:
+            set {_countdown} to true
+        if {_add} < 0:
+            set {_countdown} to false
+
+
+        add {_add} to y coord of {_location}
+        draw 100 of dust using dustOption(aqua , 1) at {_location} with offset vector(0.5, 0.5, 0.5)
+        wait 1 tick
