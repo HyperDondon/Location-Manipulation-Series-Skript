@@ -1,0 +1,39 @@
+function spawnCircle(radius: number, location: location):
+	set {_spacing} to 0.1
+	set {_circumference} to 2 * pi * {_radius}
+	
+	set {_numParticles} to floor({_circumference} / {_spacing})
+	
+	loop {_numParticles} times:
+		set {_angle} to loop-value * 360 / {_numParticles}
+		set {_v} to spherical vector with radius {_radius}, yaw {_angle} and pitch 0
+		
+		draw 1 of dust using dustOption(blue, 1) at {_location} ~ {_v}
+
+command /test:
+    trigger:
+        set {_angle} to 0
+        set {_step} to 1
+        while {_angle} < 360:
+            add {_step} to {_angle}
+            set {_v} to spherical vector with radius 0.1, yaw 0 and pitch {_angle}
+            set {_v2} to spherical vector with radius 3, yaw 0 and pitch {_angle}
+        
+            draw 0 of end rod at player ~ {_v} with offset {_v2} with extra 0.1
+
+command /test123:
+    trigger:
+        #set {_v} to vector from player's location to location 3 blocks infront of player
+
+        set {_x} to x coord of location 3 blocks infront of player - x coord of player
+        set {_y} to y coord of location 3 blocks infront of player - y coord of player
+        set {_z} to z coord of location 3 blocks infront of player - z coord of player
+
+        draw 0 of end rod at player with offset vector({_x}, {_y}, {_z}) with extra 1
+
+
+function sphericalVector(radius: number, yaw: number, pitch: number) :: vector:
+    set {_x} to {_radius} * cos({_yaw}) * cos({_pitch})
+    set {_y} to {_radius} * sin({_pitch})
+    set {_z} to {_radius} * sin({_yaw}) * cos({_pitch})
+    return vector({_x}, {_y}, {_z})
