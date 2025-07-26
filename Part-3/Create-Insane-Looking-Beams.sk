@@ -1,0 +1,78 @@
+function beam(loc: location, p: player):
+	change {_p}'s vision to enderman
+	set {_distance} to 100
+	set {_spacing} to 1
+	set {_radius} to 2
+	set {_spawnLocation} to location 1 block above {_loc}
+	play sound "minecraft:entity.wither.shoot" with volume 5 and pitch 0.5 at {_spawnLocation}
+	loop {_distance} / {_spacing} times:
+		make 10 of dust using dustOption(rgb(0, 227, 238), 20) at {_spawnLocation} with offset vector(0.5, 0.5, 0.5) with force
+
+		make 10 of sculk soul at {_spawnLocation} with offset vector(2, 2, 2) with extra 0 with force
+
+		make 6 of end rod at {_spawnLocation} with force
+		
+
+		set {_angle} to loop-iteration * 2
+		set {_v} to spherical vector with radius {_radius} + 7, yaw yaw of {_spawnLocation} - 90 and pitch {_angle}
+		make 2 of dust using dustOption(rgb(42, 58, 64), 5) at {_spawnLocation} ~ {_v} with offset vector(0.1,0.1,0.1) with force
+
+		set {_v} to spherical vector with radius {_radius} + 7, yaw yaw of {_spawnLocation} - 90 and pitch {_angle} + 90
+		make 2 of dust using dustOption(rgb(42, 58, 64), 5) at {_spawnLocation} ~ {_v} with offset vector(0.1,0.1,0.1) with force
+	
+		set {_v} to spherical vector with radius {_radius} + 7, yaw yaw of {_spawnLocation} - 90 and pitch {_angle} + 180
+		make 2 of dust using dustOption(rgb(42, 58, 64), 5) at {_spawnLocation} ~ {_v} with offset vector(0.1,0.1,0.1) with force
+	
+		set {_v} to spherical vector with radius {_radius} + 7, yaw yaw of {_spawnLocation} - 90 and pitch {_angle} + 270
+		make 2 of dust using dustOption(rgb(42, 58, 64), 5) at {_spawnLocation} ~ {_v} with offset vector(0.1,0.1,0.1) with force
+
+
+		set {_angle} to loop-iteration * 4
+		set {_v} to spherical vector with radius {_radius} + 4, yaw yaw of {_spawnLocation} - 90 and pitch {_angle}
+		make 1 of dust using dustOption(rgb(0, 100, 93), 4) at {_spawnLocation} ~ {_v} with offset vector(0.1,0.1,0.1) with force
+
+		set {_v} to spherical vector with radius {_radius} + 4, yaw yaw of {_spawnLocation} - 90 and pitch {_angle} + 180
+		make 1 of dust using dustOption(rgb(0, 100, 93), 4) at {_spawnLocation} ~ {_v} with offset vector(0.1,0.1,0.1) with force
+
+
+		set {_rightv} to vector from {_spawnLocation} to location 3 blocks right of {_spawnLocation}
+		set {_leftv} to vector from {_spawnLocation} to location 3 blocks left of {_spawnLocation}
+		set {_abovev} to vector from {_spawnLocation} to location 3 blocks above {_spawnLocation}
+		set {_underv} to vector from {_spawnLocation} to location 3 blocks under {_spawnLocation}
+
+		loop 30 times:
+			make 0 of snowflake at {_spawnLocation} with offset {_rightv} with extra 0.5 with force
+			make 0 of snowflake at {_spawnLocation} with offset {_leftv} with extra 0.5 with force
+			make 0 of snowflake at {_spawnLocation} with offset {_abovev} with extra 0.5 with force
+			make 0 of snowflake at {_spawnLocation} with offset {_underv} with extra 0.5 with force
+			
+
+		
+		if block at {_spawnLocation} is not air or light:
+			play sound "minecraft:item.mace.smash_ground_heavy" with volume 10 and pitch 0.5 at {_spawnLocation}
+			set pitch of {_spawnLocation} to 0 
+			set yaw of {_spawnLocation} to 0 
+			loop floor((2 * pi * 4) / 0.08) times:
+				set {_v} to spherical vector with radius 0.1, yaw (loop-iteration-2 * 360 / floor((2 * pi * 4) / 0.08)), pitch 0
+				set {_expandv} to {_v}
+				set vector length of {_expandv} to 2
+				draw 0 of end rod at {_spawnLocation} ~ {_v} with offset {_expandv} with extra 0.5 with force
+
+				rotate {_expandv} around z-axis by 30
+				draw 0 of end rod at {_spawnLocation} ~ {_v} with offset {_expandv} with extra 0.5 with force
+
+				rotate {_expandv} around z-axis by 120
+				draw 0 of end rod at {_spawnLocation} ~ {_v} with offset {_expandv} with extra 0.5 with force
+
+				set {_v} to spherical vector with radius 0.1, yaw (loop-iteration-2 * 360 / floor((2 * pi * 4) / 0.08)), pitch 0
+				set {_expandv} to {_v}
+				set vector length of {_expandv} to 2
+				rotate {_expandv} around z-axis by 90
+				draw 0 of end rod at {_spawnLocation} ~ {_v} with offset {_expandv} with extra 0.5 with force
+			exit 1 loop
+		set {_spawnLocation} to location {_spacing} blocks infront of {_spawnLocation}
+		wait 1 tick if mod(loop-iteration, 3) is 0
+
+command /spawnBeam:
+	trigger:
+		beam(player's location, player)
