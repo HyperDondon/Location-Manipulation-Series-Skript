@@ -1,0 +1,8 @@
+import:
+    java.util.Properties
+    java.io.StringReader
+
+function unicode(unicode: text) :: text:
+    set {_properties} to new Properties()
+    {_properties}.load(new StringReader("key=%{_unicode}%"))
+    return {_properties}.getProperty("key")
