@@ -1,0 +1,11 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "hyperdondon:space_nosplit.png",
+      "ascent": -50000,
+      "height": -10,
+      "chars": ["\uE001"]
+    }
+  ]
+}
